@@ -1,0 +1,19 @@
+g++ := g++ -std=c++17
+rm := rm -f
+
+.PHONY: run clean
+
+run: clean encoder.exe
+	./encoder.exe
+
+clean:
+	$(rm) match.o compressor.o encoder.o vanilla.o encoder.exe
+
+encoder.exe: encoder.o
+	@echo "===>Creating executable"
+	$(g++) encoder.o -o encoder.exe
+
+encoder.o: encoder.cpp compressor.hpp match.hpp
+	@echo "===>Creating encoder"
+	$(g++) -c encoder.cpp -o encoder.o
+

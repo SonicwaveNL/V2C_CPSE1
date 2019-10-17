@@ -1,0 +1,28 @@
+g++ := g++ -std=c++17
+ln := g++ -std=c++17
+rm := rm -f 
+
+.PHONY: run clean
+
+
+run: generator.exe
+
+clean:
+	$(rm) generator.o note_player.o rtttl_player.o melody.o
+
+generator.exe : melody.o note_player.o rtttl_player.o
+	@echo "===>Creating generator executable"
+	$(ln) -c generator.o note_player.o rtttl_player.o -o generator.exe
+
+note_player.o : note_player_pc.cpp note_player_pc.cpp note_player.hpp
+	@echo "===>Creating note_player"
+	$(g++) note_player_pc.cpp note_player_pc.cpp -o note_player.o
+
+rtttl_player.o : rtttl_player.cpp rtttl_player.hpp
+	@echo "===>Creating rtttl_generator"
+	$(g++) rtttl_player.cpp -o rtttl_player.o
+
+melody.cpp : melody.hpp
+	@echo "===>Creating melody files"
+	$(g++) melody.cpp -o melody.o
+

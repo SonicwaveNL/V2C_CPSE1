@@ -1,0 +1,29 @@
+g++ := g++ -std=c++17
+ln := g++ -std=c++17
+rm := rm -f 
+
+.PHONY: run build cleanup
+
+run: generator.exe
+
+build: cleanup generator.exe
+	./generator.exe
+
+cleanup:
+	$(rm) generator.o note_player_pc.o
+
+generator.exe: generator.o note_player_pc.o
+	@echo "===>Creating generator executable"
+	$(g++) generator.o note_player_pc.o -o generator.exe
+
+generator.o: generator.cpp note_player_pc.hpp
+	@echo "===>Creating generator"
+	$(g++) -c generator.cpp -o generator.o
+
+note_player_pc.o: note_player_pc.cpp note_player_pc.hpp
+	@echo "===>Creating note player"
+	$(g++) -c note_player_pc.cpp -o note_player_pc.o
+
+melody.cpp: generator.exe
+	@echo "===>Creating melody files"
+	./generator.exe
